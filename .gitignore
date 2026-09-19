@@ -1,0 +1,27 @@
+﻿# Build results
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+# PostgreSQL data (Docker volume)
+pgdata/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# NuGet
+*.nupkg
