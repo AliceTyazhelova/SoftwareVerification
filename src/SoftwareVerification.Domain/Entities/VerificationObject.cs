@@ -4,7 +4,6 @@ namespace SoftwareVerification.Domain.Entities
 {
     public class VerificationObject
     {
-        
         public int Id { get; private set; } 
 
         //Название продукта
@@ -28,12 +27,13 @@ namespace SoftwareVerification.Domain.Entities
         //Для EF
         private VerificationObject() { }
 
-        public VerificationObject(string name, string version, VerificationType type, DateTime receivedAt)
+        public VerificationObject(string name, string version, VerificationType type, DateTime receivedAt, string? expertComment = null)
         {
             Name = name;
             Version = version;
             Type = type;
             ReceivedAt = receivedAt;
+            ExpertComment = expertComment;
         }
 
         public void SetExpertComment(string? comment)

@@ -1,5 +1,4 @@
-﻿using SoftwareVerification.Domain.Enums;
-
+﻿
 namespace SoftwareVerification.Api.Dto
 {
     /// <summary>

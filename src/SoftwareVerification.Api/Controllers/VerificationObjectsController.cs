@@ -26,12 +26,12 @@ public class VerificationObjectsController : ControllerBase
         [FromQuery] VerificationType? type,
         [FromQuery] VerificationResult? result)
     {
-        var query = _db.VerificationObjects.AsQueryable();
+        IQueryable<VerificationObject> query = _db.VerificationObjects;
 
         if (!string.IsNullOrWhiteSpace(name))
         {
             var pattern = $"%{name.Trim()}%";
-            query = query.Where(x => EF.Functions.ILike(x.Name, pattern));
+            query = query.Where(x => EF.Functions.ILike(x.Name, pattern)); //Регистронезависимо в postgres
         }
 
         if (type.HasValue)
@@ -66,7 +66,14 @@ public class VerificationObjectsController : ControllerBase
             dto.Name,
             dto.Version,
             dto.Type,
-            dto.ReceivedAt);
+            dto.ReceivedAt,
+            dto.ExpertComment
+            );
+
+        if (!string.IsNullOrWhiteSpace(dto.ExpertComment))
+        {
+            entity.SetExpertComment(dto.ExpertComment.Trim());
+        }
 
         _db.VerificationObjects.Add(entity);
         await _db.SaveChangesAsync();
@@ -90,3 +97,4 @@ public class VerificationObjectsController : ControllerBase
         return Ok(entity.ToDto());
     }
 }
+

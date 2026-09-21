@@ -16,3 +16,18 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: src/SoftwareVerification.Api/Dockerfile
+    container_name: softwareverification-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=softwareverification;Username=softwareverification;Password=devpass"
+    ports:
+      - "8001:8080"
+    restart: unless-stopped

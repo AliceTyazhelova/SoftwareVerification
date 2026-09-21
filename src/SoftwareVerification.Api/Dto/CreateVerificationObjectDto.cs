@@ -18,5 +18,8 @@ namespace SoftwareVerification.Api.Dto
 
         [Required]
         public DateTime ReceivedAt { get; set; }
+
+        [StringLength(2000)]
+        public string? ExpertComment { get; set; }
     }
 }
