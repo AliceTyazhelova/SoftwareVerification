@@ -10,6 +10,8 @@ namespace SoftwareVerification.Infrastructure.Data
 
         //Только чтение, чтобы нельзя было присвоить null
         public DbSet<VerificationObject> VerificationObjects => Set <VerificationObject>();
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

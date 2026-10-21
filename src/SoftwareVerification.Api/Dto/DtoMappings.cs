@@ -1,4 +1,4 @@
-﻿using SoftwareVerification.Api.Dto;
+﻿using SoftwareVerification.Domain.Dto;
 using SoftwareVerification.Domain.Entities;
 
 namespace SoftwareVerification.Api.Dtos;

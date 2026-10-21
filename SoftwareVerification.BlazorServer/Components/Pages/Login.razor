@@ -1,0 +1,31 @@
+﻿@page "/login"
+@inject NavigationManager NavManager
+
+<div class="container mt-5" style="max-width: 400px;">
+    <h3 class="text-center mb-4">Вход в систему</h3>
+
+    @* Проверяем параметр в URL (например, /login?error=1), чтобы показать ошибку *@
+    @if (NavManager.Uri.Contains("error=1"))
+    {
+        <div class="alert alert-danger">Неверный логин или пароль</div>
+    }
+
+    <!--
+        Обратите внимание:
+        1. method="post" (обычный HTTP POST, а не Blazor-событие)
+        2. action="/api/login" (эндпоинт, который мы создадим в Program.cs)
+        3. У полей есть атрибут name="..." (по нему сервер будет искать данные)
+    -->
+    <form method="post" action="/api/login">
+        <div class="mb-3">
+            <label class="form-label">Логин</label>
+            <input type="text" name="username" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Пароль</label>
+            <input type="password" name="password" class="form-control" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Войти</button>
+    </form>
+</div>

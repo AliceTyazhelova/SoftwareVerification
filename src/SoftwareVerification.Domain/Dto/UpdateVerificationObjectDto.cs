@@ -1,7 +1,7 @@
 ﻿using SoftwareVerification.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace SoftwareVerification.Api.Dto
+namespace SoftwareVerification.Domain.Dto
 {
     public class UpdateVerificationObjectDto
     {

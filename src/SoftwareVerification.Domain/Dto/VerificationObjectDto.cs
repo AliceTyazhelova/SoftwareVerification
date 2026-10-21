@@ -1,5 +1,5 @@
 ﻿
-namespace SoftwareVerification.Api.Dto
+namespace SoftwareVerification.Domain.Dto
 {
     /// <summary>
     /// Что отдаем клиенту

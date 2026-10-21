@@ -1,0 +1,75 @@
+﻿@page "/verifications"
+@using Microsoft.AspNetCore.Authorization
+@using System.Net.Http.Json
+
+@inject IHttpClientFactory HttpClientFactory
+@attribute [Authorize]
+@* Защищаем страницу от неавторизованных *@
+
+<h3 class="mt-4">Список объектов верификации</h3>
+
+@if (loading)
+{
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Загрузка...</span>
+    </div>
+}
+else if (objects == null || !objects.Any())
+{
+    <div class="alert alert-info">Список пуст или произошла ошибка при загрузке.</div>
+}
+else
+{
+    <table class="table table-striped table-hover mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>Имя</th>
+                <th>Версия</th>
+                <th>Тип</th>
+                <th>Статус</th>
+                <th>Дата получения</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in objects)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Version</td>
+                    <td>@item.Type</td>
+                    <td>
+                        @* Красим статус в зависимости от результата *@
+                        <span class="badge @(item.Result == "Success" ? "bg-success" : "bg-danger")">
+                            @item.Result
+                        </span>
+                    </td>
+                    <td>@item.ReceivedAt.ToString("g")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<VerificationObjectDto>? objects;
+    private bool loading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = HttpClientFactory.CreateClient("ApiClient");
+        
+        try
+        {
+            // Обращаемся к вашему контроллеру из API (используем порт 8001)
+            objects = await client.GetFromJsonAsync<List<VerificationObjectDto>>("http://localhost:8001/api/verification-objects");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка загрузки: {ex.Message}");
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+}

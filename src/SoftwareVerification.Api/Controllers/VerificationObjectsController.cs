@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SoftwareVerification.Api.Dto;
+using SoftwareVerification.Domain.Dto;
 using SoftwareVerification.Api.Dtos;
 using SoftwareVerification.Domain.Entities;
 using SoftwareVerification.Domain.Enums;
