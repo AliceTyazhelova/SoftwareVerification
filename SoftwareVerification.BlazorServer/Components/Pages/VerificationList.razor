@@ -3,7 +3,7 @@
 @using System.Net.Http.Json
 
 @inject IHttpClientFactory HttpClientFactory
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Admin")]
 @* Защищаем страницу от неавторизованных *@
 
 <h3 class="mt-4">Список объектов верификации</h3>
@@ -49,6 +49,7 @@ else
         </tbody>
     </table>
 }
+
 
 @code {
     private List<VerificationObjectDto>? objects;

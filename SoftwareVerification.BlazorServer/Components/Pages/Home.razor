@@ -1,8 +1,8 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
-@attribute [Authorize]
-@* Защищаем страницу. Без входа сюда не попасть *@
+@attribute [Authorize(Roles = "User")]
+@* Для всех авторизованных пользователей *@
 
 <div class="container mt-4">
     <h1>Главная страница</h1>
@@ -11,26 +11,14 @@
     <AuthorizeView>
         <Authorized>
             <p class="alert alert-success">
-                Привет, <strong>@context.User.Identity.Name</strong>! Вы успешно вошли.
+                Привет, <strong>@context.User.Identity?.Name</strong>! Вы успешно вошли.
             </p>
         </Authorized>
-        <NotAuthorized>
-            <p class="alert alert-warning">Вы не авторизованы.</p>
-        </NotAuthorized>
     </AuthorizeView>
 
-    <AuthorizeView Roles="Admin">
-        <p class="alert alert-danger">
-            <strong>Секретный блок:</strong> Только для администраторов!
-        </p>
-        <button class="btn btn-primary" @onclick="ShowToast">Показать Toast (через SignalR)</button>
+    <AuthorizeView Roles="User">
+        <strong>Вы вошли как обычный пользователь</strong>
     </AuthorizeView>
+
+
 </div>
-
-@code {
-    private void ShowToast()
-    {
-        // Здесь позже будет вызов вашего NotificationHub
-        Console.WriteLine("Кнопка нажата!");
-    }
-}

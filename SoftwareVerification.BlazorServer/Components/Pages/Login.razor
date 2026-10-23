@@ -10,13 +10,8 @@
         <div class="alert alert-danger">Неверный логин или пароль</div>
     }
 
-    <!--
-        Обратите внимание:
-        1. method="post" (обычный HTTP POST, а не Blazor-событие)
-        2. action="/api/login" (эндпоинт, который мы создадим в Program.cs)
-        3. У полей есть атрибут name="..." (по нему сервер будет искать данные)
-    -->
-    <form method="post" action="/api/login">
+  
+    <form method="post" action="/api/auth/login">
         <div class="mb-3">
             <label class="form-label">Логин</label>
             <input type="text" name="username" class="form-control" required />
