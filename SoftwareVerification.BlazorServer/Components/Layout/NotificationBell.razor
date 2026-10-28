@@ -1,0 +1,57 @@
+﻿@using SoftwareVerification.BlazorServer.Services
+@inject NotificationService NotificationService
+@inject NotificationClientService NotificationSvc
+@implements IDisposable
+
+<div class="dropdown">
+    <button id="notification-bell" class="btn btn-link text-light position-relative" data-bs-toggle="dropdown">
+        <span style="font-size: 1.5rem;">🔔</span>
+        @if (NotificationService.UnreadCount > 0)
+        {
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                @NotificationService.UnreadCount
+            </span>
+        }
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end shadow" style="width: 350px;">
+
+        @if (!NotificationService.Notifications.Any())
+        {
+            <li><span class="dropdown-item-text text-muted">Нет уведомлений</span></li>
+        }
+        else
+        {
+            @foreach (var item in NotificationService.Notifications)
+            {
+                <li>
+                    <a class="dropdown-item" href="#">
+                        <small>@item.Message</small> <br />
+                        <small class="text-muted">@item.Timestamp.ToString("HH:mm")</small>
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        // Console.WriteLine("=== BELL: OnInitialized СРАБОТАЛ ===");
+        // //  ПРИСВАИВАЕМ, а не подписываемся
+        // NotificationService.OnUpdate = () => InvokeAsync(StateHasChanged);
+        NotificationSvc.OnBellUpdate = EventCallback.Factory.Create(this, StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        NotificationService.OnUpdate = null;
+    }
+
+    private void HandleChange()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    
+}

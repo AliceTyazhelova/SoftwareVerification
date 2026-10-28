@@ -66,7 +66,7 @@ public class VerificationObjectsController : ControllerBase
             dto.Name,
             dto.Version,
             dto.Type,
-            dto.ReceivedAt,
+            DateTime.SpecifyKind(dto.ReceivedAt, DateTimeKind.Utc),
             dto.ExpertComment
             );
 

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using SoftwareVerification.BlazorServer.Components;
+using SoftwareVerification.BlazorServer.Hubs;
 using SoftwareVerification.BlazorServer.Services;
-using System.Security.Claims;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,18 +12,25 @@ builder.Services.AddHttpClient("ApiClient", client =>
     client.BaseAddress = new Uri("http://localhost:8001"); 
 });
 
-builder.Services.AddScoped<IAuthApiClient, AuthApiClient>();
+builder.Services.AddSingleton<NotificationService>();
+builder.Services.AddScoped<NotificationClientService>();
+//builder.Services.AddScoped<VerificationService>();
 
+builder.Services.AddScoped<IAuthApiClient, AuthApiClient>();
+builder.Services.AddScoped<VerificationApiClient>();
+
+builder.Services.AddSignalR();
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    .AddInteractiveServerComponents()
+    .AddCircuitOptions(options => { options.DetailedErrors = true; });
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.Cookie.Name = "SoftwareVerification.Auth"; // Имя Cookie
         options.LoginPath = "/login"; // Путь перенаправления, если пользователь не аутентифицирован
-        options.AccessDeniedPath = "/access-denied"; // Путь перенаправления, если нет прав доступа
+        options.AccessDeniedPath = "/login";  // Путь перенаправления, если нет прав доступа
         options.ExpireTimeSpan = TimeSpan.FromHours(24); // Время истечения
         options.SlidingExpiration = true; // Продление при активности
     });
@@ -60,5 +67,7 @@ app.MapControllers();
 // Подключение конечных точек Razor Components
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode(); // Включает интерактивный режим сервера
+
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.Run();
