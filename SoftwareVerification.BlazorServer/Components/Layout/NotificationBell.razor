@@ -35,23 +35,22 @@
 </div>
 
 @code {
+    
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) await NotificationSvc.StartAsync();
+    }
+
     protected override void OnInitialized()
     {
-        // Console.WriteLine("=== BELL: OnInitialized СРАБОТАЛ ===");
-        // //  ПРИСВАИВАЕМ, а не подписываемся
-        // NotificationService.OnUpdate = () => InvokeAsync(StateHasChanged);
-        NotificationSvc.OnBellUpdate = EventCallback.Factory.Create(this, StateHasChanged);
+        NotificationSvc.BellUpdated += HandleChange;
     }
+
+    private void HandleChange() => InvokeAsync(StateHasChanged);
 
     public void Dispose()
     {
-        NotificationService.OnUpdate = null;
+        NotificationSvc.BellUpdated -= HandleChange;
     }
-
-    private void HandleChange()
-    {
-        InvokeAsync(StateHasChanged);
-    }
-
-    
 }

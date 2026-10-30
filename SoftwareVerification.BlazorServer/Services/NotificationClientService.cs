@@ -11,6 +11,8 @@ public class NotificationClientService : IAsyncDisposable
     private readonly NavigationManager _nav;
     private readonly NotificationService _notificationService;
 
+    public event Action? BellUpdated;
+
     public EventCallback OnBellUpdate { get; set; }
 
     public NotificationClientService(IJSRuntime js, NavigationManager nav, NotificationService notificationService)
@@ -44,17 +46,9 @@ public class NotificationClientService : IAsyncDisposable
             }
         });
 
-        _hubConnection.On<int>("UpdateBell", async(count) =>
+        _hubConnection.On<int>("UpdateBell", (count) =>
         {
-            if (OnBellUpdate.HasDelegate)
-            {
-                await OnBellUpdate.InvokeAsync();
-            }
-            //// 1.Вызываем JS для визуального эффекта
-            //await _js.InvokeVoidAsync("updateBell");
-
-            //// 2. Всё равно вызываем OnUpdate, чтобы обновить цифру (если колокольчик жив)
-            //_notificationService.OnUpdate?.Invoke();
+            BellUpdated?.Invoke();
         });
 
         try

@@ -101,15 +101,6 @@ else
         await LoadData();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender && !_hubStarted)
-        {
-            _hubStarted = true;
-            await NotificationSvc.StartAsync();
-        }
-    }
-
     private async Task LoadData()
     {
         loading = true;
